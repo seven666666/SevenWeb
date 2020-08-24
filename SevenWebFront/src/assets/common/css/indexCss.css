@@ -1,0 +1,10 @@
+.index-head {
+  background: rgb(146, 167, 189);
+  color: white;
+}
+
+.index-head-div {
+  height: 100%;
+  text-align: center;
+  line-height: 60px;
+}
