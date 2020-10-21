@@ -1,32 +1,36 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import $ from "jquery";
-import Vant from "vant";
 import "vant/lib/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min";
 import ElementUI from "element-ui";
 import VueI18n from "vue-i18n";
-import enLocale from "element-ui/lib/locale/lang/en";
-import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 import "element-ui/lib/theme-chalk/index.css";
 import VueResource from "vue-resource";
 import Vuex from "vuex";
+import Avue from '@smallwei/avue';
+import '@smallwei/avue/lib/index.css';
 
+/*---------使用AXIOS-----------*/
 // 引用axios，并设置基础URL为nginx监听url
-var axios = require("axios");
-axios.defaults.baseURL = "http://127.0.0.1:80";
+export var axios = require("axios");
+axios.defaults.baseURL = "http://127.0.0.1:8099";
+axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios;
+
+/*---------其它-----------*/
 Vue.use(VueResource);
 Vue.use(Vuex);
-Vue.use(ElementUI);
-Vue.use(VueI18n);
-
 Vue.config.productionTip = false;
 
+/*---------页面框架-----------*/
+Vue.use(ElementUI);
+Vue.use(Avue);
+
 /*---------使用语言包-----------*/
+Vue.use(VueI18n);
 const i18n = new VueI18n({
   locale: "CN", // 语言标识
   messages: {
@@ -44,3 +48,5 @@ new Vue({
   components: { App },
   template: "<App/>"
 });
+
+window.Vue = Vue

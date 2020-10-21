@@ -1,35 +1,26 @@
 import Vue from "vue";
 import Router from "vue-router";
-import HelloWorld from "@/components/HelloWorld";
-import i18nTest from "@/components/i18nTest";
 import index from "@/view/index";
-import studyCell from "@/view/studyCell/index";
+import pageRouter from './routerRegister';
 
 Vue.use(Router);
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 
 export default new Router({
   mode: "history",
   routes: [
     {
-      path: "/HelloWorld",
-      name: "HelloWorld",
-      component: HelloWorld
-    },
-    {
-      path: "/i18nTest",
-      name: "i18nTest",
-      component: i18nTest
-    },
-    {
       path: "/",
-      name: "index",
-      component: index
+      name: "index2",
+      component: index,
+      children: [
+        // 需要显示的页面需要放置在view根目录下才能识别
+        ...pageRouter,
+      ]
     },
-
-    {
-      path: "/studyCell",
-      name: "studyCell",
-      component: studyCell
-    }
   ]
 });

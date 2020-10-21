@@ -1,10 +1,15 @@
 .index-head {
-  background: rgb(146, 167, 189);
-  color: white;
+  color: rgb(77, 104, 133);
+  font-size: 20px;
+  height: 60px;
+  border-bottom: 1px solid #dcdfe6;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(220, 223, 230);
 }
 
 .index-head-div {
   height: 100%;
   text-align: center;
-  line-height: 60px;
+  line-height: 59px;
 }

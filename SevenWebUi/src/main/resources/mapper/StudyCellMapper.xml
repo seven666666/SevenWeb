@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seven.web.dao.StudyCellMapper">
+    <select id="getPlanTable" resultType="com.seven.web.model.studyCell.PlanWork">
+        SELECT *
+        FROM PLAN_WORK
+        ORDER BY ID DESC
+    </select>
+
+    <select id="getStudyTable" resultType="com.seven.web.model.studyCell.StudyWork">
+        SELECT *
+        FROM STUDY_WORK
+        ORDER BY ID DESC
+    </select>
+
+    <select id="getMonthFinishedDay" resultType="string">
+        SELECT DISTINCT TIME
+        FROM DAILY_PLAN_WORK
+        WHERE DATE_FORMAT(TIME, '%Y%m') = DATE_FORMAT(#{queryDate}, '%Y%m')
+          AND (PLAN_FINISH = 1 OR STUDY_FINISH = 1)
+    </select>
+
+    <select id="getMonthUnFinishedDay" resultType="string">
+        SELECT TIME AS EXCLUDE_TIME
+        FROM DAILY_PLAN_WORK
+        WHERE DATE_FORMAT(TIME, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')
+          AND (PLAN_FINISH = 0 OR STUDY_FINISH = 0)
+    </select>
+
+    <select id="getPlanDicData" resultType="map">
+        SELECT PROJECT AS "label",
+               ID      AS "value"
+        FROM PLAN_WORK
+        WHERE PERCENT &lt; 100
+    </select>
+
+    <insert id="addTodayPlan">
+        INSERT INTO DAILY_PLAN_WORK(TIME, PLAN_ID, PLAN_PERCENT, PLAN_FINISH)
+        VALUES (CURRENT_DATE, #{projectName}, #{percent}, 0)
+    </insert>
+
+    <insert id="addStudyList" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO STUDY_WORK(PROJECT, START_TIME)
+        VALUES (#{project}, #{start_time})
+    </insert>
+
+    <insert id="addPlanTable">
+        INSERT INTO PLAN_WORK(PROJECT, START_TIME, STATUS, PRIORITY, REMARKS)
+        VALUES (#{project}, CURRENT_DATE, #{status}, #{priority}, #{remarks})
+    </insert>
+
+    <delete id="delStudyList">
+        DELETE
+        FROM study_work
+        WHERE ID = #{studyId}
+    </delete>
+
+    <delete id="delPlanList">
+        DELETE
+        FROM plan_work
+        WHERE ID = #{planId}
+    </delete>
+
+    <select id="getTodayTodoPlanTable" resultType="map">
+        SELECT DPW.ID AS id, PW.PROJECT AS project, DPW.PLAN_FINISH AS finish
+        FROM DAILY_PLAN_WORK AS DPW
+                 JOIN
+             PLAN_WORK AS PW
+             ON
+                 DPW.PLAN_ID = PW.ID
+        WHERE DPW.TIME = CURRENT_DATE
+          AND DPW.PLAN_ID IS NOT NULL
+    </select>
+
+    <select id="getTodayTodoStudyTable" resultType="map">
+        SELECT DPW.ID AS id, SW.PROJECT AS project, DPW.STUDY_FINISH AS finish
+        FROM DAILY_PLAN_WORK AS DPW
+                 JOIN
+             STUDY_WORK AS SW
+             ON
+                 DPW.STUDY_ID = SW.ID
+        WHERE DPW.TIME = CURRENT_DATE
+          AND DPW.STUDY_ID IS NOT NULL
+    </select>
+
+    <update id="updatePlanTable">
+        UPDATE PLAN_WORK
+        SET PROJECT    = #{priority},
+            PERCENT    = #{percent},
+            DEPENDS_ON = #{depends_on},
+            PRIORITY   = #{priority},
+            STATUS     = #{status},
+            REMARKS    = #{remarks}
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="insertStudyListDaysPlan" parameterType="java.util.List">
+        insert into DAILY_PLAN_WORK(TIME, STUDY_ID, STUDY_FINISH) values
+        <foreach collection="dailyPlanWorkList" item="dailyPlanWork" separator="," close=";">
+            (#{dailyPlanWork.time}, #{dailyPlanWork.study_id},0)
+        </foreach>
+    </insert>
+
+    <delete id="delDailyPlanByStudyId">
+        DELETE
+        FROM daily_plan_work
+        WHERE STUDY_ID = #{studyId}
+    </delete>
+
+    <select id="selectDailyPlanWorkById" resultType="com.seven.web.model.studyCell.DailyPlanWork">
+        SELECT *
+        FROM daily_plan_work
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updateTodayTodo">
+        UPDATE
+        daily_plan_work
+        SET
+        <if test="dailyPlanWork.plan_id != 0">
+            PLAN_FINISH = #{dailyPlanWork.plan_finish}
+        </if>
+        <if test="dailyPlanWork.study_id != 0">
+            STUDY_FINISH = #{dailyPlanWork.study_finish}
+        </if>
+        WHERE
+        ID = #{dailyPlanWork.id}
+    </update>
+
+    <update id="updatePlanPercent">
+        UPDATE plan_work
+        SET PERCENT = PERCENT + #{dailyPlanWork.plan_percent}
+        WHERE ID = #{dailyPlanWork.plan_id}
+    </update>
+
+    <select id="selectPlanWorkById" resultType="com.seven.web.model.studyCell.PlanWork">
+        SELECT *
+        FROM plan_work
+        WHERE ID = #{plan_id}
+    </select>
+
+    <select id="selectStudyWorkById" resultType="com.seven.web.model.studyCell.StudyWork">
+        SELECT *
+        FROM study_work
+        WHERE ID = #{study_id}
+    </select>
+
+    <update id="updateStudyDayFinish" parameterType="com.seven.web.model.studyCell.StudyWork">
+        UPDATE study_work
+        SET ONE_DAY = #{studyWork.one_day},
+            TWO_DAY = #{studyWork.two_day},
+            FOUR_DAY = #{studyWork.four_day},
+            SEVEN_DAY = #{studyWork.seven_day},
+            FIFTEEN_DAY = #{studyWork.fifteen_day}
+        WHERE ID = #{studyWork.id}
+    </update>
+</mapper>

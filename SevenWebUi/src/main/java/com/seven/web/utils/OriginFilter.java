@@ -29,11 +29,6 @@ public class OriginFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
         response.setHeader("Access-Control-Allow-Credentials","true"); //是否支持cookie跨域
 
-        //response.reset();
-      /*  response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACES");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");*/
         chain.doFilter(req, resp);
     }
 
