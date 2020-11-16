@@ -134,7 +134,7 @@ export default {
       console.log(row)
       postRequest('studyCell/addStudyList', row).then((res) => {
         if (res.data != 'success') {
-          this.$notify.error({
+          this.$message.error({
             title: 'error',
             message: '添加失败，请联系管理员',
           })
@@ -162,12 +162,12 @@ export default {
     deleteStudyWork(row) {
       postRequest('studyCell/delStudyList', row).then((res) => {
         if (res.data != 'success') {
-          this.$notify.error({
+          this.$message.error({
             title: 'error',
             message: '删除失败，请联系管理员',
           })
         } else {
-          this.$notify.success({
+          this.$message.success({
             title: 'success',
             message: '删除成功',
           })

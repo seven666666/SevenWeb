@@ -29,14 +29,18 @@
 
     <select id="getPlanDicData" resultType="map">
         SELECT PROJECT AS "label",
-               ID      AS "value"
+        ID AS "value",
+        PERCENT AS "percent"
         FROM PLAN_WORK
         WHERE PERCENT &lt; 100
+        <if test="project != ''">
+            AND PROJECT = #{project}
+        </if>
     </select>
 
-    <insert id="addTodayPlan">
-        INSERT INTO DAILY_PLAN_WORK(TIME, PLAN_ID, PLAN_PERCENT, PLAN_FINISH)
-        VALUES (CURRENT_DATE, #{projectName}, #{percent}, 0)
+    <insert id="addTodayPlan" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO DAILY_PLAN_WORK(TIME, PLAN_ID, PLAN_PERCENT, PLAN_FINISH, REMARKS)
+        VALUES (CURRENT_DATE, #{plan_id}, #{plan_percent}, 0, #{remarks})
     </insert>
 
     <insert id="addStudyList" useGeneratedKeys="true" keyProperty="id">
@@ -62,7 +66,11 @@
     </delete>
 
     <select id="getTodayTodoPlanTable" resultType="map">
-        SELECT DPW.ID AS id, PW.PROJECT AS project, DPW.PLAN_FINISH AS finish
+        SELECT DPW.ID           AS id,
+               PW.PROJECT       AS project,
+               DPW.PLAN_FINISH  AS finish,
+               DPW.PLAN_PERCENT AS percent,
+               DPW.REMARKS      AS dailyRemarks
         FROM DAILY_PLAN_WORK AS DPW
                  JOIN
              PLAN_WORK AS PW
@@ -73,7 +81,10 @@
     </select>
 
     <select id="getTodayTodoStudyTable" resultType="map">
-        SELECT DPW.ID AS id, SW.PROJECT AS project, DPW.STUDY_FINISH AS finish
+        SELECT DPW.ID           AS id,
+               SW.PROJECT       AS project,
+               DPW.STUDY_FINISH AS finish,
+               DPW.REMARKS      AS dailyRemarks
         FROM DAILY_PLAN_WORK AS DPW
                  JOIN
              STUDY_WORK AS SW
@@ -85,12 +96,21 @@
 
     <update id="updatePlanTable">
         UPDATE PLAN_WORK
-        SET PROJECT    = #{priority},
-            PERCENT    = #{percent},
-            DEPENDS_ON = #{depends_on},
-            PRIORITY   = #{priority},
-            STATUS     = #{status},
-            REMARKS    = #{remarks}
+        SET
+        PROJECT = #{project},
+        PERCENT = #{percent},
+        DEPENDS_ON = #{depends_on},
+        PRIORITY = #{priority},
+        STATUS = #{status},
+        REMARKS = #{remarks}
+        <choose>
+            <when test="percent == 100">
+                ,END_TIME = CURRENT_DATE
+            </when>
+            <otherwise>
+                ,END_TIME = NULL
+            </otherwise>
+        </choose>
         WHERE ID = #{id}
     </update>
 
@@ -107,6 +127,12 @@
         WHERE STUDY_ID = #{studyId}
     </delete>
 
+    <delete id="delDailyPlanByPlanId">
+        DELETE
+        FROM daily_plan_work
+        WHERE PLAN_ID = #{planId}
+    </delete>
+
     <select id="selectDailyPlanWorkById" resultType="com.seven.web.model.studyCell.DailyPlanWork">
         SELECT *
         FROM daily_plan_work
@@ -117,6 +143,7 @@
         UPDATE
         daily_plan_work
         SET
+        REMARKS = #{dailyPlanWork.remarks},
         <if test="dailyPlanWork.plan_id != 0">
             PLAN_FINISH = #{dailyPlanWork.plan_finish}
         </if>
@@ -129,7 +156,10 @@
 
     <update id="updatePlanPercent">
         UPDATE plan_work
-        SET PERCENT = PERCENT + #{dailyPlanWork.plan_percent}
+        SET PERCENT = #{dailyPlanWork.newPercent}
+        <if test="dailyPlanWork.status != null">
+            ,STATUS = #{dailyPlanWork.status}
+        </if>
         WHERE ID = #{dailyPlanWork.plan_id}
     </update>
 
@@ -147,10 +177,10 @@
 
     <update id="updateStudyDayFinish" parameterType="com.seven.web.model.studyCell.StudyWork">
         UPDATE study_work
-        SET ONE_DAY = #{studyWork.one_day},
-            TWO_DAY = #{studyWork.two_day},
-            FOUR_DAY = #{studyWork.four_day},
-            SEVEN_DAY = #{studyWork.seven_day},
+        SET ONE_DAY     = #{studyWork.one_day},
+            TWO_DAY     = #{studyWork.two_day},
+            FOUR_DAY    = #{studyWork.four_day},
+            SEVEN_DAY   = #{studyWork.seven_day},
             FIFTEEN_DAY = #{studyWork.fifteen_day}
         WHERE ID = #{studyWork.id}
     </update>

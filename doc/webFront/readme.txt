@@ -1,2 +1,1 @@
-1. vscode 配置文件 
-SevenWeb\doc\webFront settings.json
+1. 格式化elint

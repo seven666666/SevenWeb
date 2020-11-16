@@ -46,9 +46,12 @@ public interface StudyCellService {
     /**
      * 添加今日计划完成任务的比例
      *
+     * @param projectName 任务名称
+     * @param percent 百分比
+     * @param flag 是否完成
      * @return 成功or失败
      */
-    String addTodayPlan(String projectName, String percent);
+    String addTodayPlan(String projectName, String percent,String flag,String dailyRemarks);
 
     /**
      * 添加学习计划表
@@ -98,8 +101,24 @@ public interface StudyCellService {
      * 更新今日需完成状态（计划需更新进度，学习需要更新那天的学习成果）
      *
      * @param id 需要更新的工作id
+     * @param percent 百分比
      * @param finish 当前该项是否完成
+     * @param dailyRemarks 今日任务备注
      * @return 是否成功
      */
-    String updateTodayTodo(int id, boolean finish);
+    String updateTodayTodo(int id, int percent, boolean finish,String dailyRemarks);
+
+    /**
+     * 添加今日任务
+     *
+     * @param project_name 项目
+     * @param percent 百分比
+     * @param priority 优先级
+     * @param dailyRemarks  今日备注
+     * @param remarks  备注
+     * @param flag 是否今日完成
+     * @return 是否成功
+     */
+    String addTodayPlanAndPlan(String project_name, String percent, String priority,String dailyRemarks, String remarks,String flag);
+
 }

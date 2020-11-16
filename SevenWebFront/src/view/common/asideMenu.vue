@@ -9,6 +9,10 @@
         <i class="el-icon-menu"></i>
         <span slot="title">{{$t('index.test')}}</span>
       </el-menu-item>
+      <el-menu-item index="3" @click="gotoRegis()">
+        <i class="el-icon-refrigerator"></i>
+        <span slot="title">{{$t('index.register')}}</span>
+      </el-menu-item>
     </el-menu>
 
     <div :class="isCollapse?`el-menu-collapse`:`el-menu-collapse-open`" @click="shutOrOpen"></div>
@@ -47,8 +51,7 @@
 }
 </style>
 <script>
-import { gotoStudyCell } from '@/assets/common/js/page'
-import { gotoTest } from '@/assets/common/js/page'
+import { gotoStudyCell, gotoTest, gotoRegis } from '@/assets/common/js/page'
 
 export default {
   data() {
@@ -60,6 +63,7 @@ export default {
   methods: {
     gotoStudyCell,
     gotoTest,
+    gotoRegis,
     shutOrOpen() {
       this.isCollapse = !this.isCollapse
     },

@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 22/10/2020 09:35:41
+ Date: 16/11/2020 11:37:03
 */
 
 SET NAMES utf8mb4;
@@ -29,8 +29,9 @@ CREATE TABLE `daily_plan_work`  (
   `PLAN_FINISH` tinyint(1) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '今日计划是否完成',
   `STUDY_ID` int(11) NULL DEFAULT NULL COMMENT '对应的学习id',
   `STUDY_FINISH` tinyint(1) NULL DEFAULT NULL COMMENT '对应的学习是否完成',
+  `REMARKS` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '对应每日的任务',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for plan_work
@@ -47,7 +48,7 @@ CREATE TABLE `plan_work`  (
   `PRIORITY` int(11) NULL DEFAULT NULL,
   `REMARKS` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for study_work
@@ -63,6 +64,6 @@ CREATE TABLE `study_work`  (
   `SEVEN_DAY` tinyint(1) UNSIGNED ZEROFILL NOT NULL DEFAULT 0,
   `FIFTEEN_DAY` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

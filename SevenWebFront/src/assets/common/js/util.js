@@ -34,3 +34,17 @@ export function getPagedData(data, currentPage, pageSize) {
   }
   return pagedData
 }
+/**
+ * 转[{}]为[]
+ *
+ */
+export function changeMapToList(map, key) {
+  let list = []
+  for (let one of map) {
+    if (one[key]) {
+      list.push(one[key])
+    }
+  }
+  return list
+}
+

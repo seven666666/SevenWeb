@@ -8,16 +8,15 @@
       </el-row>
     </el-header>
     <el-container>
-      <!-- <el-aside> -->
       <asideMenu></asideMenu>
-      <!-- </el-aside> -->
-      <el-main style="overflow: scroll">
+      <el-main>
         <router-view @gotoChildPage="gotoChildPage"></router-view>
       </el-main>
     </el-container>
   </el-container>
 </template>
-<style scoped></style>
+<style scoped>
+</style>
 <script>
 import '@/assets/common/css/indexCss.css'
 import asideMenu from './common/asideMenu'

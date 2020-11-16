@@ -12,7 +12,7 @@
     <!-- 今日待完成项与日历完成情况 -->
     <el-row :gutter="30">
       <el-col :span="16">
-        <todayTodoTable ref="todayTodoTableRef"> </todayTodoTable>
+        <todayTodoTable ref="todayTodoTableRef" @refreshStudyAndPlan="refreshStudyAndPlan"> </todayTodoTable>
       </el-col>
       <el-col :span="8">
         <ele-calendar :render-content="renderContent" :data="datedef" :prop="prop">
@@ -26,7 +26,7 @@
     </el-row>
     <!-- 学习列表一览 -->
     <el-row>
-      <studyList @refreshTodayTodoTable="refreshTodayTodoTable"></studyList>
+      <studyList @refreshTodayTodoTable="refreshTodayTodoTable" ref="studyListRef"></studyList>
     </el-row>
     <hr />
     <!-- 标识第三个表格的内容 -->
@@ -35,7 +35,7 @@
     </el-row>
     <!-- 计划总进度一览 -->
     <el-row>
-      <planTable @refreshTodayTodoSelect="refreshTodayTodoSelect"></planTable>
+      <planTable @refreshTodayTodoSelect="refreshTodayTodoSelect" ref="planTableRef"></planTable>
     </el-row>
   </div>
 </template>
@@ -122,18 +122,19 @@ export default {
           this.datedef = res.data
         })
         .catch((reason) => {
-          this.$notify.error({
+          this.$message.error({
             title: 'error',
             message: JSON.stringify(reason),
           })
         })
     },
     /**
-     * 更新每日选择
+     * 更新每日选择,和每日任务显示
      */
     refreshTodayTodoSelect() {
       console.log('refreshTodayTodoSelect')
       this.$refs.todayTodoTableRef.refreshSelect()
+      this.$refs.todayTodoTableRef.getTodayTodoTable()
     },
     /**
      * 更新每日待办
@@ -141,6 +142,14 @@ export default {
     refreshTodayTodoTable() {
       console.log('refreshTodayTodoTable')
       this.$refs.todayTodoTableRef.getTodayTodoTable()
+    },
+    /**
+     * 更新学习及计划表
+     */
+    refreshStudyAndPlan() {
+      console.log('refreshStudyAndPlan')
+      this.$refs.studyListRef.getStudyTable()
+      this.$refs.planTableRef.getPlanTable()
     },
   },
   created() {

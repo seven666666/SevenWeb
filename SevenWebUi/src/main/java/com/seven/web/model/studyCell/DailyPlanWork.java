@@ -17,12 +17,14 @@ public class DailyPlanWork {
     boolean plan_finish;
     int study_id;
     boolean study_finish;
+    String remarks;
 
     public DailyPlanWork() {
     }
 
-    public DailyPlanWork(Date time, int study_id) {
+    public DailyPlanWork(Date time, int study_id, boolean study_finish) {
         this.time = time;
         this.study_id = study_id;
+        this.study_finish = study_finish;
     }
 }

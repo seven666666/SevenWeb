@@ -46,9 +46,16 @@ public class StudyCellController {
     }
 
     @RequestMapping(value = "/addTodayPlan", method = RequestMethod.POST)
-    public String addTodayPlan(String project_name, String percent) {
-        LOG.info(String.format("addTodayPlan,planId:%s,percent:%s", project_name, percent));
-        return studyCellService.addTodayPlan(project_name, percent);
+    public String addTodayPlan(String project_name, String percent, String dailyRemarks, String flag) {
+        LOG.info(String.format("addTodayPlan,planId:%s,percent:%s,flag:%s,dailyRemarks:%s", project_name, percent, flag, dailyRemarks));
+        return studyCellService.addTodayPlan(project_name, percent, flag, dailyRemarks);
+    }
+
+    @RequestMapping(value = "/addTodayPlanAndPlan", method = RequestMethod.POST)
+    public String addTodayPlanAndPlan(String project_name, String percent, String priority, String dailyRemarks, String remarks, String flag) {
+        LOG.info(String.format("addTodayPlanAndPlan,planId:%s,percent:%s,priority:%s,dailyRemarks:%s,remarks:%s,flag:%s",
+                project_name, percent, priority, dailyRemarks, remarks, flag));
+        return studyCellService.addTodayPlanAndPlan(project_name, percent, priority, dailyRemarks, remarks, flag);
     }
 
     @RequestMapping(value = "/addStudyList", method = RequestMethod.POST)
@@ -82,8 +89,8 @@ public class StudyCellController {
     }
 
     @RequestMapping(value = "/updateTodayTodo", method = RequestMethod.POST)
-    public String updateTodayTodo(int id, boolean finish) {
-        LOG.info(String.format("updatePlanTable,id:%s,finish:%s", id, finish));
-        return studyCellService.updateTodayTodo(id,finish);
+    public String updateTodayTodo(int id, int percent, boolean finish, String dailyRemarks) {
+        LOG.info(String.format("updatePlanTable,id:%s,percent:%s,finish:%s,dailyRemarks:%s", id, percent, finish,dailyRemarks));
+        return studyCellService.updateTodayTodo(id, percent, finish,dailyRemarks);
     }
 }

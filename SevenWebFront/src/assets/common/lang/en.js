@@ -6,3 +6,7 @@ export const message = {
 export const index = {
   StudyWorkCell: 'Study Work Cell',
 }
+
+export const todaytodoTable = {
+    addBtn: "Add Plan"
+}

@@ -4,4 +4,6 @@ export function gotoStudyCell() {
 export function gotoTest() {
   this.$router.push('test')
 };
-
+export function gotoRegis() {
+  this.$router.push('register')
+};

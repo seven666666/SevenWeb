@@ -23,9 +23,9 @@ public interface StudyCellMapper {
 
     List<String> getMonthUnFinishedDay(@Param("queryDate") Date queryDate);
 
-    List<Map<String, String>> getPlanDicData();
+    List<Map<String, Object>> getPlanDicData(@Param("project")String project);
 
-    void addTodayPlan(@Param("projectName") String projectName, @Param("percent") String percent);
+    void addTodayPlan(DailyPlanWork dailyPlanWork);
 
     void addStudyList(StudyWork studyWork);
 
@@ -44,16 +44,17 @@ public interface StudyCellMapper {
     void insertStudyListDaysPlan(@Param("dailyPlanWorkList") List<DailyPlanWork> dailyPlanWorkList);
 
     void delDailyPlanByStudyId(@Param("studyId") String studyId);
+    void delDailyPlanByPlanId(@Param("planId") String planId);
 
     void updateTodayTodo(@Param("dailyPlanWork") DailyPlanWork dailyPlanWork);
 
     DailyPlanWork selectDailyPlanWorkById(@Param("id") int id);
 
-    void updatePlanPercent(@Param("dailyPlanWork")DailyPlanWork dailyPlanWork);
+    void updatePlanPercent(@Param("dailyPlanWork") Map<String, Object> dailyPlanWork);
 
     PlanWork selectPlanWorkById(@Param("plan_id") int plan_id);
 
     StudyWork selectStudyWorkById(@Param("study_id") int study_id);
 
-    void updateStudyDayFinish(@Param("studyWork")StudyWork studyWork);
+    void updateStudyDayFinish(@Param("studyWork") StudyWork studyWork);
 }

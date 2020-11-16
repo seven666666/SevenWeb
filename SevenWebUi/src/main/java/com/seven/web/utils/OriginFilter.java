@@ -12,7 +12,6 @@ import java.io.IOException;
  * @author ${lcl}
  * @Title: ${NAME}
  * @ProjectName exhibition
- * @Description: TODO
  * @date 2019/2/28 00209:20
  */
 @Component
